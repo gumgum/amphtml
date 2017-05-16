@@ -213,6 +213,7 @@ const AMP_EMBED_ALLOWED = {
   bringhub: true,
   dable: true,
   engageya: true,
+  gumgum: true,
   'mantis-recommend': true,
   mywidget: true,
   outbrain: true,

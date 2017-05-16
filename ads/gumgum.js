@@ -21,8 +21,8 @@ import {setStyles} from '../src/style';
  * @param {!Window} global
  * @param {!Object} data
  */
-export function gumgum(global, data) {
-  validateData(data, ['zone', 'slot']);
+export function gumgum(global, data, undefined) {
+  validateData(data, ['zone']);
 
   const
       win = window,
@@ -31,6 +31,30 @@ export function gumgum(global, data) {
       ampWidth = parseInt(data.width || '0', 10),
       ampHeight = parseInt(data.height || '0', 10),
       ggevents = global.ggevents || [];
+
+  let ampLayout = String(data.layout);
+  if (ampLayout !== undefined) {
+    if (ampWidth || ampHeight) {
+      if (ampWidth && ampHeight) {
+        ampLayout = 'fixed';
+      } else if (ampHeight || (!ampWidth && ampWidth === 'auto')) {
+        ampLayout = 'fixed-height';
+      } else {
+        ampLayout = 'responsive';
+      }
+    } else {
+      ampLayout = 'container';
+    }
+  }
+
+  // Analyze if we need a manual trigger for visibility
+  // global.context.observeIntersection(function(changes) {
+  //   changes.forEach(function(c) {
+  //     if (c.intersectionRect.height) {
+  //       // In-view
+  //     }
+  //   });
+  // });
 
   const
       max = Math.max,
@@ -57,7 +81,33 @@ export function gumgum(global, data) {
   global.sourceUrl = context.sourceUrl;
   global.sourceReferrer = context.referrer;
 
-  if (slotId) {
+  if (data.imgsrc) {
+    // In-Image Ad
+    const img = document.createElement('img');
+    img.setAttribute('src', data.imgsrc);
+    switch (ampLayout) {
+      case 'fixed':
+        img.setAttribute('width', '100%');
+        img.setAttribute('height', '100%');
+        break;
+      case 'fixed-height':
+        img.setAttribute('height', '100%');
+        img.setAttribute('width', 'auto');
+        break;
+      case 'responsive':
+      default:
+        img.setAttribute('width', '100%');
+        break;
+    }
+    dom.appendChild(img);
+    // Events
+    ggevents.push({
+      'inimage.nofill': noFill,
+      'inimage.load': onLoad('INIMAGE'),
+    });
+    // Main script
+    loadScript(global, 'https://g2.gumgum.com/javascripts/ggv2.js');
+  } else if (slotId) {
     // Slot Ad
     const ins = global.document.createElement('div');
     setStyles(ins, {

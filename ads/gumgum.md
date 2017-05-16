@@ -27,13 +27,30 @@ limitations under the License.
 </amp-ad>
 ```
 
+### In-Image Ad
+```html
+<amp-embed width="400" height="400"
+    layout="responsive"
+    type="gumgum"
+    data-zone="ggumtest"
+    data-imgsrc="https://i.imgur.com/WzEc5Rs.jpg">
+  <div placeholder>Placeholder</div>
+  <div fallback>Fallback</div>
+</amp-embed>
+```
+
 ## Configuration
 
 For parameters, configuration or any question please contact [GumGum](http://gumgum.com/contact/).
 
 Supported parameters:
 
-__Required:__
+__Required for Slot Ad:__
 
 - `data-zone` GumGum Zone ID
 - `data-slot` GumGum Slot Ad ID
+
+__Required for In-Image Ad:__
+
+- `data-zone` GumGum Zone ID
+- `data-imgsrc` An URL to the desired image
