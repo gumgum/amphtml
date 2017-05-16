@@ -56,6 +56,30 @@ export function gumgum(global, data, undefined) {
   //   });
   // });
 
+  let ampLayout = String(data.layout);
+  if (ampLayout !== undefined) {
+    if (ampWidth || ampHeight) {
+      if (ampWidth && ampHeight) {
+        ampLayout = 'fixed';
+      } else if (ampHeight || (!ampWidth && ampWidth === 'auto')) {
+        ampLayout = 'fixed-height';
+      } else {
+        ampLayout = 'responsive';
+      }
+    } else {
+      ampLayout = 'container';
+    }
+  }
+
+  // Analyze if we need a manual trigger for visibility
+  // global.context.observeIntersection(function(changes) {
+  //   changes.forEach(function(c) {
+  //     if (c.intersectionRect.height) {
+  //       // In-view
+  //     }
+  //   });
+  // });
+
   const
       max = Math.max,
       slotId = parseInt(data.slot, 10),
